@@ -19,22 +19,57 @@ public class Kafe11 {
     }
     public static int hitungTotalHarga11(int pilihanMenu, int banyakItem) {
         int[] hargaItems = {15000, 20000, 22000, 12000, 10000, 18000};
-
+        if (pilihanMenu < 1 || pilihanMenu > 6) {
+        System.out.println("Menu tidak tersedia");
+        return 0;
+    }
         int hargaTotal = hargaItems[pilihanMenu - 1] * banyakItem;
         return hargaTotal;
+    }
+    public static int hitungDiskon(int total, String kodePromo, boolean isMember) {
+        int diskon = 0;
+
+        if (kodePromo.equals("DISKON50")) {
+            diskon = total * 50 / 100;
+        } else if (kodePromo.equals("DISKON30")) {
+            diskon = total * 30 / 100;
+        } else {
+            System.out.println("Kode promo invalid");
+        }
+        if (isMember) {
+            diskon += total * 10 / 100;
+        }
+        return diskon;
     }
         public static void main(String args[]) {
         Scanner sc = new Scanner(System.in);
 
         Menu("Andi", true);
 
-        System.out.print("\nMasukkan nomor menu yang ingin Anda pesan: ");
-        int pilihanMenu = sc.nextInt();
-        System.out.print("Masukkan jumlah item yang ingin dipesan: ");
-        int banyakItem = sc.nextInt();
-        int totalBayar = hitungTotalHarga11(pilihanMenu, banyakItem);
-        System.out.println("Total harga untuk pesanan Anda: Rp" + totalBayar);
+        int totalBayar = 0;
+        char tambahPesanan;
 
+        do {
+            System.out.print("\nMasukkan nomor menu: ");
+            int pilihanMenu = sc.nextInt();
+            System.out.print("Masukkan jumlah item: ");
+            int banyakItem = sc.nextInt();
+
+            totalBayar += hitungTotalHarga11(pilihanMenu, banyakItem);
+
+            System.out.print("Tambah pesanan? (y/n): ");
+            tambahPesanan = sc.next().charAt(0);
+        } while (tambahPesanan == 'y' || tambahPesanan == 'Y');
+        System.out.print("Masukkan kode promo: ");
+        String kodePromo = sc.next();
+
+        boolean isMember = true;
+        int diskon = hitungDiskon(totalBayar, kodePromo, isMember);
+        int totalAkhir = totalBayar - diskon;
+
+        System.out.println("Total harga: Rp" + totalBayar);
+        System.out.println("Besar diskon: Rp" + diskon);
+        System.out.println("Total yang harus dibayar: Rp" + totalAkhir);
         sc.close();
-        }
+    }
 }
