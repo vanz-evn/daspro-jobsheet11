@@ -74,30 +74,41 @@ public class RekapLaundry11 {
         System.out.println("Total pendapatan selama 6 hari: Rp" + totalPendapatan);
     }
     public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
+    Scanner input = new Scanner(System.in);
 
-        String[] namaLayanan = {
-            "Cuci Kering",
-            "Cuci Setrika",
-            "Setrika Saja",
-            "Express"
-        };
-        int[] hargaPerKg = {
-            6000, 8000, 5000, 12000
-        };
-        String[] namaHari = {
-            "Senin", "Selasa", "Rabu",
-            "Kamis", "Jumat", "Sabtu"
-        };
-        int[][] data = new int[4][6];
-
-        inputData(input, data, namaLayanan, namaHari);
-        tampilData(data, namaLayanan, namaHari);
-        layananTerbesar(data, namaLayanan);
-        int hari = hariTersibuk(data);
-        System.out.println("\nHari tersibuk: " + namaHari[hari]);
-        tampilPendapatan(data, namaLayanan, hargaPerKg);
-
+    System.out.print("Masukkan jumlah layanan: ");
+    int jumlahLayanan = input.nextInt();
+    System.out.print("Masukkan jumlah hari: ");
+    int jumlahHari = input.nextInt();
+    if (jumlahLayanan <= 0 || jumlahHari <= 0) {
+        System.out.println("Jumlah layanan dan hari harus lebih dari 0.");
         input.close();
+        return;
     }
+    input.nextLine();
+    String[] namaLayanan = new String[jumlahLayanan];
+    int[] hargaPerKg = new int[jumlahLayanan];
+    String[] namaHari = new String[jumlahHari];
+    for (int i = 0; i < jumlahLayanan; i++) {
+        System.out.print("\nMasukkan nama layanan ke-" + (i + 1) + ": ");
+        namaLayanan[i] = input.nextLine();
+        System.out.print("Masukkan harga per kg: ");
+        hargaPerKg[i] = input.nextInt();
+        input.nextLine();
+    }
+    for (int j = 0; j < jumlahHari; j++) {
+        namaHari[j] = "Hari ke-" + (j + 1);
+    }
+    int[][] data = new int[jumlahLayanan][jumlahHari];
+    inputData(input, data, namaLayanan, namaHari);
+    tampilData(data, namaLayanan, namaHari);
+    layananTerbesar(data, namaLayanan);
+
+    int hari = hariTersibuk(data);
+    System.out.println("\nHari tersibuk: " + namaHari[hari]);
+
+    tampilPendapatan(data, namaLayanan, hargaPerKg);
+
+    input.close();
+}
 }
